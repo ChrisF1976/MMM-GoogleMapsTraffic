@@ -10,7 +10,7 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 ```
 git clone https://github.com/ChrisF1976/MMM-GoogleMapsTraffic.git
 ```
-*** This module has no dependencies anymore. 
+* This module has no dependencies anymore. 
 
 ## Using the module
 
