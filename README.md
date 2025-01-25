@@ -4,14 +4,30 @@
 
 A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that displays a map, centered at provided coordinates, with Google Maps Traffic information.
 
+---
+**This module has been forked from https://github.com/vicmora/MMM-GoogleMapsTraffic.**
+---
+## Changes in this fork
+- removed all dependencies. If you have the old module installed,delete completely and reinstall this (or use ```mv MMM-GoogleMapsTraffic MMM-GoogleMapsTraffic_backup``` if you have doubts).
+- removed nearly all error messages in the console.
+- better in the behavior with other modules (I had some crazy failiures - the old module was the reason).
+- config.js remains unchanged
+
+### open issue
+in the console you will see this message from google:
+
+[Warning] As of February 21st, 2024, google.maps.Marker is deprecated. Please use google.maps.marker.AdvancedMarkerElement instead. At this time, google.maps.Marker is not scheduled to be discontinued, but google.maps.marker.AdvancedMarkerElement is recommended over google.maps.Marker. While google.maps.Marker will continue to receive bug fixes for any major regressions, existing bugs in google.maps.Marker will not be addressed. At least 12 months notice will be given before support is discontinued. Please see https://developers.google.com/maps/deprecations for additional details and https://developers.google.com/maps/documentation/javascript/advanced-markers/migration for the migration guide. (main.js, line 185)
+
+I tried to fix that, but this means that the predefined layouts cannot be used anymore. Then erveryone must do this in the maps api. As long as this is only a warning I will ignore that. I had this failire fixed and defeated the google API but it is really complicated to explain. So lets's keep it easy at this point.
+
 ## Installation
 
 1. Navigate into your MagicMirror's `~/MagicMirror/modules` folder and execute
 ```
 git clone https://github.com/ChrisF1976/MMM-GoogleMapsTraffic.git
 ```
-* This module has no dependencies anymore. 
-
+**This module has no dependencies anymore.** 
+---
 ## Using the module
 
 To use this module, add it to the modules array in the `config/config.js` file:
@@ -27,7 +43,7 @@ var config = {
                 lng: -122.2920096,
                 height: '300px',
                 width: '300px'
-                styledMapType: "transparent",
+                styledMapType: "meins",
                 disableDefaultUI: true,
                 backgroundColor: 'hsla(0, 0%, 0%, 0)',
                 markers: [
