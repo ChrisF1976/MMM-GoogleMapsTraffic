@@ -12,6 +12,7 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 - removed nearly all error messages in the console.
 - better in the behavior with other modules (I had some crazy failiures - the old module was the reason).
 - config.js remains unchanged
+- files in the mapStyle folder have a *.json ending now. Please update your mapStyle with this ending, too. - ```mv YOURmapStyle YOURmapStyle.json```
 
 ### open issue
 in the console you will see this message from google:
