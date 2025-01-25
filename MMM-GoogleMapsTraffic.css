@@ -1,0 +1,10 @@
+#map {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    visibility: visible;
+    display: block !important;
+    border: 2px solid red; /* Debugging aid */
+    background-color: black; /* Debugging aid */
+}
