@@ -6,8 +6,11 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 
 ## Installation
 
-1. Navigate into your MagicMirror's `~/MagicMirror/modules` folder and execute `git clone https://github.com/vicmora/MMM-GoogleMapsTraffic.git`. A new folder will appear navigate into it.
-2. Execute `npm install` in `~/MagicMirror/modules/MMM-GoogleMapsTraffic` to install the node dependencies.
+1. Navigate into your MagicMirror's `~/MagicMirror/modules` folder and execute
+```
+git clone https://github.com/ChrisF1976/MMM-GoogleMapsTraffic.git
+```
+*** This module has no dependencies anymore. 
 
 ## Using the module
 
