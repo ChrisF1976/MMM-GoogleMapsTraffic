@@ -1,6 +1,6 @@
 # MMM-GoogleMapsTraffic
 
-![Alt text](/img/mmm-googlemapstraffic-transparent.png "A preview of the MMM-GoogleMapsTraffic module.")
+![Alt text](/Traffic.png "A preview of the MMM-GoogleMapsTraffic module.")
 
 A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that displays a map, centered at provided coordinates, with Google Maps Traffic information.
 
