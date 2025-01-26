@@ -38,6 +38,8 @@ var config = {
         {
             module: 'MMM-GoogleMapsTraffic',
             position: 'top_left',
+            header: "Traffic around me",
+            disabled: false,
             config: {
                 key: 'YOUR_KEY',
                 lat: 37.8262306,
