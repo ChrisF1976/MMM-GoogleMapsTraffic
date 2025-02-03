@@ -38,34 +38,33 @@ Module.register("MMM-GoogleMapsTraffic", {
         }, this.config.updateInterval);
     },
 
+    getStyles: function () {
+      return ["MMM-GoogleMapsTraffic.css"];
+    },
+    
     getDom: function () {
-    let wrapper = document.getElementById("map");
-    if (!wrapper) {
-        wrapper = document.createElement("div");
-        wrapper.setAttribute("id", "map");
-        wrapper.style.height = this.config.height;
-        wrapper.style.width = this.config.width;
-    }
-
-    // Add Google Maps script only if it's not already loaded
-    if (!document.querySelector(`script[src*="maps.googleapis.com/maps/api/js"]`)) {
+      const wrapper = document.createElement("div");
+      wrapper.setAttribute("id", "map");
+      wrapper.className = "GoogleMap";
+      wrapper.style.height = this.config.height;
+      wrapper.style.width = this.config.width;
+    
+      if (!document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]')) {
         const script = document.createElement("script");
         script.type = "text/javascript";
         script.src = `https://maps.googleapis.com/maps/api/js?key=${this.config.key}&callback=initMap&libraries=places&v=weekly&loading=async`;
         script.defer = true;
         script.async = true;
-
-        // Attach initMap globally
+    
         window.initMap = () => {
-           setTimeout(() => this.initMap(), 100); // Retry in 100ms
+          setTimeout(() => this.initMap(), 100);
         };
-
+    
         document.body.appendChild(script);
-    }
-
-    return wrapper;
-},
-
+      }
+    
+      return wrapper;
+    },
 
     initMap: function () {
     
