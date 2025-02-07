@@ -4,22 +4,21 @@ const path = require("path");
 
 module.exports = NodeHelper.create({
     start: function () {
-      
+        // Initialization if needed.
     },
 
     socketNotificationReceived: function (notification, payload) {
-        if (notification === "MMM-GOOGLE_MAPS_TRAFFIC-GET") {
-            
-            this.sendNotification(this.getStyleMap(payload.style));
+        if (notification === "MMM-GOOGLE_MAPS-TRAFFIC-GET" || notification === "MMM-GOOGLE_MAPS_TRAFFIC-GET") {
+            const stylePayload = this.getStyleMap(payload.style);
+            this.sendSocketNotification("MMM-GOOGLE_MAPS_TRAFFIC-RESPONSE", stylePayload);
         }
     },
 
     getStyleMap: function (style) {
         try {
+            // Look for the style JSON file in the "mapStyle" subfolder.
             const filePath = path.join(__dirname, "mapStyle", `${style}.json`);
-            
             const styledMapType = JSON.parse(fs.readFileSync(filePath, "utf8"));
-            
             return { styledMapType };
         } catch (err) {
             if (err.code === "ENOENT") {
@@ -27,11 +26,7 @@ module.exports = NodeHelper.create({
             } else {
                 console.error(`Error loading styled map file: ${style}`, err);
             }
-            return { styledMapType: [] }; // Return empty if file not found or invalid
+            return { styledMapType: [] };
         }
-    },
-
-    sendNotification: function (payload) {
-        this.sendSocketNotification("MMM-GOOGLE_MAPS_TRAFFIC-RESPONSE", payload);
     }
 });
