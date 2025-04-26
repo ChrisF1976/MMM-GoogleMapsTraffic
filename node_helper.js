@@ -4,11 +4,13 @@ const path = require("path");
 
 module.exports = NodeHelper.create({
     start: function () {
-        // Initialization if needed.
+        console.log("MMM-GoogleMapsTraffic node helper started");
     },
 
     socketNotificationReceived: function (notification, payload) {
+        console.log("Node helper received notification:", notification);
         if (notification === "MMM-GOOGLE_MAPS-TRAFFIC-GET" || notification === "MMM-GOOGLE_MAPS_TRAFFIC-GET") {
+            console.log("Processing style:", payload.style);
             const stylePayload = this.getStyleMap(payload.style);
             this.sendSocketNotification("MMM-GOOGLE_MAPS_TRAFFIC-RESPONSE", stylePayload);
         }
@@ -16,9 +18,9 @@ module.exports = NodeHelper.create({
 
     getStyleMap: function (style) {
         try {
-            // Look for the style JSON file in the "mapStyle" subfolder.
             const filePath = path.join(__dirname, "mapStyle", `${style}.json`);
             const styledMapType = JSON.parse(fs.readFileSync(filePath, "utf8"));
+            console.log("Style loaded successfully:", style);
             return { styledMapType };
         } catch (err) {
             if (err.code === "ENOENT") {
