@@ -149,6 +149,17 @@ Module.register("MMM-GoogleMapsTraffic", {
             if (this.map) {
                 console.log("Updating existing map styles");
                 this.map.setOptions({ styles: this.styledMapType });
+
+                // Refresh the traffic layer
+                if (this.trafficLayer) {
+                    console.log("Removing existing traffic layer");
+                    this.trafficLayer.setMap(null); // Remove the existing traffic layer
+                }
+
+                console.log("Adding new traffic layer");
+                this.trafficLayer = new google.maps.TrafficLayer();
+                this.trafficLayer.setMap(this.map); // Add a new traffic layer
+
                 google.maps.event.trigger(this.map, 'resize');
             } else {
                 console.log("Map not initialized, updating DOM");
