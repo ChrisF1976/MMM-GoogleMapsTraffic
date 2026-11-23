@@ -30,14 +30,29 @@ Module.register("MMM-GoogleMapsTraffic", {
             return;
         }
 
-        // Request the styled map JSON from node_helper
+        // Unique DOM id so the module does not clash with other modules (or a second instance)
+        this.mapId = `${this.identifier}_map`;
+
+        // The style file never changes, so it only needs to be requested once
         this.sendSocketNotification("MMM-GOOGLE_MAPS_TRAFFIC-GET", { style: this.config.styledMapType });
         console.log("Sent initial notification for style:", this.config.styledMapType);
 
+        // Periodically refresh only the traffic layer
         this.updateIntervalId = setInterval(() => {
-            this.sendSocketNotification("MMM-GOOGLE_MAPS_TRAFFIC-GET", { style: this.config.styledMapType });
-            console.log("Sent periodic update notification");
+            this.refreshTrafficLayer();
         }, this.config.updateInterval);
+    },
+
+    refreshTrafficLayer: function () {
+        if (!this.map) {
+            return;
+        }
+        console.log("Refreshing traffic layer");
+        if (this.trafficLayer) {
+            this.trafficLayer.setMap(null);
+        }
+        this.trafficLayer = new google.maps.TrafficLayer();
+        this.trafficLayer.setMap(this.map);
     },
 
     getStyles: function () {
@@ -55,8 +70,7 @@ Module.register("MMM-GoogleMapsTraffic", {
     
     
         const wrapper = document.createElement("div");
-        // Use a fixed id (adjust if you plan on multiple instances)
-        wrapper.setAttribute("id", "map");
+        wrapper.setAttribute("id", this.mapId);
         wrapper.className = "GoogleMap";
         wrapper.style.height = this.config.height;
         wrapper.style.width = this.config.width;
@@ -92,12 +106,14 @@ Module.register("MMM-GoogleMapsTraffic", {
 
 	initMap: function () {
         console.log("Initializing map...");
-        if (!this.config.lat || !this.config.lng) {
+        const lat = parseFloat(this.config.lat);
+        const lng = parseFloat(this.config.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
             console.error("Invalid latitude or longitude");
             return;
         }
 
-        const mapElement = document.getElementById("map");
+        const mapElement = document.getElementById(this.mapId);
         if (!mapElement) {
             console.error("Map element not found");
             return;
@@ -108,20 +124,26 @@ Module.register("MMM-GoogleMapsTraffic", {
             this.map = new google.maps.Map(mapElement, {
                 zoom: this.config.zoom,
                 mapTypeId: this.config.mapTypeId,
-                center: { lat: this.config.lat, lng: this.config.lng },
+                center: { lat: lat, lng: lng },
                 styles: this.styledMapType || [],
                 disableDefaultUI: this.config.disableDefaultUI,
                 backgroundColor: this.config.backgroundColor
             });
 
-            const trafficLayer = new google.maps.TrafficLayer();
-            trafficLayer.setMap(this.map);
+            this.trafficLayer = new google.maps.TrafficLayer();
+            this.trafficLayer.setMap(this.map);
 
             if (this.config.markers && Array.isArray(this.config.markers)) {
                 this.config.markers.forEach(marker => {
+                    const markerLat = parseFloat(marker.lat);
+                    const markerLng = parseFloat(marker.lng);
+                    if (!Number.isFinite(markerLat) || !Number.isFinite(markerLng)) {
+                        console.error("Skipping marker with invalid latitude or longitude:", marker);
+                        return;
+                    }
                     new google.maps.Marker({
                         map: this.map,
-                        position: { lat: marker.lat, lng: marker.lng },
+                        position: { lat: markerLat, lng: markerLng },
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
                             scale: 6,
@@ -149,17 +171,6 @@ Module.register("MMM-GoogleMapsTraffic", {
             if (this.map) {
                 console.log("Updating existing map styles");
                 this.map.setOptions({ styles: this.styledMapType });
-
-                // Refresh the traffic layer
-                if (this.trafficLayer) {
-                    console.log("Removing existing traffic layer");
-                    this.trafficLayer.setMap(null); // Remove the existing traffic layer
-                }
-
-                console.log("Adding new traffic layer");
-                this.trafficLayer = new google.maps.TrafficLayer();
-                this.trafficLayer.setMap(this.map); // Add a new traffic layer
-
                 google.maps.event.trigger(this.map, 'resize');
             } else {
                 console.log("Map not initialized, updating DOM");
