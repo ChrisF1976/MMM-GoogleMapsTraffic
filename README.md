@@ -75,7 +75,7 @@ var config = {
 | `mapTypeId`          | The map type to display (roadmap, satellite, hybrid, terrain).  <br><br>**Type:** `string` <br> **Default value:** `roadmap`
 | `styledMapType`      | Style of the map. See below for help.<br><br>**Type:** `string`<br> **Possible value:** `standard`, `dark`, `night`, `black` or *custom*<br> **Default value:** `standard`
 | `disableDefaultUI`   | Disable default UI buttons (Zoom and Street View). <br><br>**Type:** `boolean` <br> **Default value:** `true`
-| `updateInterval`     | How often the module should load the map.<br><br>**Type:** `int` in millisecond<br> **Default value:** `900000 (15 mins)`
+| `updateInterval`     | How often the traffic layer is refreshed.<br><br>**Type:** `int` in millisecond<br> **Default value:** `900000 (15 mins)`
 | `markers`            | Additional markers in the map as an array. See example.
 | `backgroundColor`    | Backgound behind the map.Can be set to transparent (`'hsla(0, 0%, 0%, 0)'`) or left at black (default).  <br><br>**Type:** `string` <br> **Default value:** `'rgba(0, 0, 0, 0)'`
 
